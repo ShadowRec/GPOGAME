@@ -2,17 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Entity : MonoBehaviour
+namespace Entity1
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public class Entity : MonoBehaviour
 
-    // Update is called once per frame
-    void Update()
+
     {
-        
+        [field: SerializeField] public double Health { get; set; }
+        [field: SerializeField] public string Name { get; set; }
+        public void TakeDamage(double damage)
+        {
+            this.Health -= damage;
+        }
+
+
+
+
     }
 }

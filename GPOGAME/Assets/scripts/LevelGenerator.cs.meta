@@ -1,0 +1,27 @@
+fileFormatVersion: 2
+guid: 6f9cddc3ad2ed674bb97a1c951f38084
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - room_0: {instanceID: 0}
+  - room_1: {fileID: 919132149155446097, guid: 559388d8bedaa5a4aac551cb3b6329b0, type: 3}
+  - room_2: {instanceID: 0}
+  - room_3: {instanceID: 0}
+  - room_4: {instanceID: 0}
+  - room_5: {instanceID: 0}
+  - room_6: {instanceID: 0}
+  - room_7: {instanceID: 0}
+  - room_8: {instanceID: 0}
+  - room_9: {instanceID: 0}
+  - room_10: {instanceID: 0}
+  - room_11: {instanceID: 0}
+  - room_12: {instanceID: 0}
+  - room_13: {instanceID: 0}
+  - room_14: {instanceID: 0}
+  - room_15: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
