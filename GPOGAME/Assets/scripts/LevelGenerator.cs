@@ -38,67 +38,293 @@ public class LevelGenerator : MonoBehaviour
                
                 switch (currentRoom/10) 
                 {
-
+                    
                     case 2:
 
-                         var NewObject= (GameObject) Instantiate(room_0, new Vector3(i*22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
+                         GameObject NewObject= (GameObject) Instantiate(room_0, new Vector3(i*22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
                         NewObject.name = currentRoom.ToString();
+                        RoomScript room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10==2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if(currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 3:
                         NewObject = (GameObject) Instantiate(room_0, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 180, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 4:
                         NewObject = (GameObject)Instantiate(room_0, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, -90, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
+
                         break;
                     case 5:
                         NewObject = (GameObject)Instantiate(room_0, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 90, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 6:
                         NewObject = (GameObject)Instantiate(room_1, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 8:
                         NewObject = (GameObject)Instantiate(room_5, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 10:
                         NewObject = (GameObject)Instantiate(room_4, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 180, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 12:
                         NewObject = (GameObject)Instantiate(room_4, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 15:
                         NewObject = (GameObject)Instantiate(room_5, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 180, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 20:
                         NewObject = (GameObject)Instantiate(room_1, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 90, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 24:
                         NewObject = (GameObject)Instantiate(room_3, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 90, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 30:
                         NewObject = (GameObject)Instantiate(room_3, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, -90, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 40:
                         NewObject = (GameObject)Instantiate(room_3, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 180, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 60:
                         NewObject = (GameObject)Instantiate(room_3, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
                     case 120:
                         NewObject = (GameObject)Instantiate(room_2, new Vector3(i * 22, 0, j * 22), Quaternion.Euler(new Vector3(0, 0, 0)));
                         NewObject.name = currentRoom.ToString();
+                        room = NewObject.transform.GetChild(0).GetComponent<RoomScript>();
+                        if (currentRoom % 10 == 2)
+                        {
+                            room.EnableShop();
+                        }
+
+                        if (currentRoom % 10 == 3)
+                        {
+                            room.EnableTreasure();
+                        }
+
+                        if (currentRoom % 10 == 0)
+                        {
+                            room.EnableEnemys();
+                        }
                         break;
 
 

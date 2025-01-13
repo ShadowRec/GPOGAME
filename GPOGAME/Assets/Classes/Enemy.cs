@@ -17,7 +17,7 @@ public class Enemy : MonoBehaviour
         _agent= GetComponent<NavMeshAgent>();
         _target = PlayerManager.instance.player.transform;
         _entity=GetComponent<Entity>();
-          _room= transform.parent.GetChild(0).GetComponent<RoomScript>();
+        _room= transform.parent.transform.parent.GetChild(0).GetComponent<RoomScript>();
         _room.EnemysNumber++;
     }
 
