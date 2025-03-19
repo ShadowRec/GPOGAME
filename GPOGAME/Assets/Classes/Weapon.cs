@@ -14,6 +14,7 @@ public class Weapon : MonoBehaviour
     private Rigidbody _rb;
     private PlayerAttack _attackScript;
     private bool _isAvaiable;
+    public WeapomType WeaponType;
     
 
     public Queue<Attack> Attacks
@@ -28,7 +29,7 @@ public class Weapon : MonoBehaviour
     {
         _collider = GetComponent<BoxCollider>();
         _rb = GetComponent<Rigidbody>();
-        _attackScript = GameObject.Find("CharacterTest11").GetComponent<PlayerAttack>();
+        _attackScript = GameObject.Find("Armature").GetComponent<PlayerAttack>();
         
 
     }

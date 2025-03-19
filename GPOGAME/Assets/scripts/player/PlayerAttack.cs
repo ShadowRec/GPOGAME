@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Entity1;
 using System.Linq;
+using UnityEditorInternal;
 public class PlayerAttack : MonoBehaviour
 {
     public Transform PlayerPos;
@@ -16,6 +17,8 @@ public class PlayerAttack : MonoBehaviour
     private PlayerMovement _playerMovement;
     bool _isAttacking = false;
     private Animator _animator;
+    public RuntimeAnimatorController[] runtimeAnimatorControllers;
+
     public int AttackIndex
     {
         set
@@ -51,6 +54,7 @@ public class PlayerAttack : MonoBehaviour
         _isStarted = true;
         _playerMovement = GetComponent<PlayerMovement>();
         _playerMovement.IsMoving += StopAttack;
+        
         
         
     }
@@ -97,6 +101,7 @@ public class PlayerAttack : MonoBehaviour
     {
         _weaponEquiped = true;
         _weapon = weapon.gameObject.GetComponent<Weapon>();
+        _animator.runtimeAnimatorController = runtimeAnimatorControllers[(int)_weapon.WeaponType];
         weapon.SetParent(hand);
         weapon.localPosition= Vector3.zero;
         weapon.localRotation= Quaternion.Euler(0f, 0f, 0f);
@@ -114,7 +119,7 @@ public class PlayerAttack : MonoBehaviour
             StopAllCoroutines();
             _isAttacking = false;
             AttackIndex = 1;
-            _animator.SetBool("PunchPrep", false);
+            
             _animator.SetBool("IsAttacking", false);
             for (int i= 1; i <= 5;i++)
                 {
