@@ -4,29 +4,48 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField]
+    private WeaponData _weapondata = new WeaponData();
+
     private int _id;
-    public string Name;
-    public float Damage;
-    public int AttackNumber;
-    protected Queue<Attack> _attacks;
-    float _distance = 4;
     private BoxCollider _collider;
     private Rigidbody _rb;
     private PlayerAttack _attackScript;
     private bool _isAvaiable;
-    public WeapomType WeaponType;
-    public float timeBtwAttack;
-    public float AttackSpeed;
-    
+  
 
     public Queue<Attack> Attacks
     {
         get
         {
-            return _attacks;
+            return _weapondata._attacks;
         }
     }
-            // Start is called before the first frame update
+
+    public WeapomType WeaponType
+    {
+        get 
+        {
+            return _weapondata.WeaponType;
+        }
+    }
+
+    public float AttackSpeed
+    {
+        get
+        {
+            return _weapondata.AttackSpeed;
+        }
+    }
+
+    public float Damage
+    {
+        get
+        {
+            return _weapondata.Damage;
+        }
+    }
+    // Start is called before the first frame update
     void Start()
     {
         _collider = GetComponent<BoxCollider>();
@@ -44,7 +63,7 @@ public class Weapon : MonoBehaviour
             _rb.isKinematic = true;
             _collider.enabled = false;
             _attackScript.TakeWeapon(gameObject.transform);
-            _attacks = new Queue<Attack>();
+            _weapondata._attacks = new Queue<Attack>();
 
         }
 
