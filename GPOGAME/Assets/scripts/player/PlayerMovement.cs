@@ -2,6 +2,7 @@
 using System;
 using Unity.VisualScripting;
 using UnityEngine;
+using static PlayerAttack;
 
 [RequireComponent (typeof(Rigidbody))]
 public class PlayerMovement : MonoBehaviour
@@ -15,14 +16,19 @@ public class PlayerMovement : MonoBehaviour
     public float Speed;
     private bool _isGrounded;
     public float JumpForce;
-    public delegate void MoveEvent();
-    public  MoveEvent IsMoving;
     private Animator _animator;
+    private bool _isAttacking;
+    private PlayerAttack _playerAttackmovemvent;
+    
+
     void Start()
     {
         _rb= GetComponent<Rigidbody>(); ;
         _animator=GetComponent<Animator>();
-    }
+        _playerAttackmovemvent= GetComponent<PlayerAttack>();
+        _playerAttackmovemvent.IsAttacking+=AttackBegin;
+        _playerAttackmovemvent.IsNotAttacking+=AttackStop;
+}
 
 
     private void Update()
@@ -31,7 +37,6 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKey(KeyCode.Space) && _isGrounded==true)
         {
             
-            IsMoving?.Invoke();
             _rb.AddForce(new Vector3(0f, JumpForce, 0f), ForceMode.Impulse);
             
         }
@@ -39,32 +44,32 @@ public class PlayerMovement : MonoBehaviour
     }
     void FixedUpdate()
     {
-      
-        
-        if ((Input.GetAxis("Horizontal")!=0) ^ (Input.GetAxis("Vertical")!=0))
+        if (!_isAttacking)
         {
-            IsMoving?.Invoke();
-            _animator.SetBool("Walk", true);
+
+            if (Input.GetKey("w") | Input.GetKey("s") | Input.GetKey("a") | Input.GetKey("d"))
+            {
+                _animator.SetBool("Walk", true);
+            }
+            else
+            {
+                _animator.SetBool("Walk", false);
+            }
+            if (_isGrounded == true)
+            {
+
+                _movementVector = transform.right * Input.GetAxis("Horizontal")
+                    + Input.GetAxis("Vertical") * transform.forward;
+                _rb.MovePosition(transform.position + _movementVector * Speed * Time.fixedDeltaTime);
+            }
+            else
+            {
+
+                _movementVector = transform.right * Input.GetAxis("Horizontal")
+                    + Input.GetAxis("Vertical") * transform.forward;
+                _rb.MovePosition(transform.position + _movementVector * (float)0.5 * Speed * Time.fixedDeltaTime);
+            }
         }
-        else
-        {
-            _animator.SetBool("Walk", false);
-        }
-        if (_isGrounded==true)
-        {
-            
-            _movementVector = transform.right * Input.GetAxis("Horizontal") 
-                + Input.GetAxis("Vertical") * transform.forward;
-            _rb.MovePosition(transform.position + _movementVector * Speed * Time.fixedDeltaTime);
-        }
-        else
-        {
-            
-            _movementVector = transform.right * Input.GetAxis("Horizontal") 
-                + Input.GetAxis("Vertical") * transform.forward;
-            _rb.MovePosition(transform.position + _movementVector * (float)0.5* Speed * Time.fixedDeltaTime);
-        }
-        
     }
     private void OnCollisionEnter(Collision collision)
     {
@@ -80,8 +85,15 @@ public class PlayerMovement : MonoBehaviour
             _isGrounded = value;
         }
     }
-
-    
+    private void AttackBegin()
+    {
+        _animator.SetBool("Walk", false);
+        _isAttacking = true;
+    }
+    private void AttackStop()
+    {
+        _isAttacking = false;
+    }
 
 
     

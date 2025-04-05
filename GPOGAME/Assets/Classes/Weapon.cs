@@ -15,6 +15,8 @@ public class Weapon : MonoBehaviour
     private PlayerAttack _attackScript;
     private bool _isAvaiable;
     public WeapomType WeaponType;
+    public float timeBtwAttack;
+    public float AttackSpeed;
     
 
     public Queue<Attack> Attacks
@@ -29,7 +31,7 @@ public class Weapon : MonoBehaviour
     {
         _collider = GetComponent<BoxCollider>();
         _rb = GetComponent<Rigidbody>();
-        _attackScript = GameObject.Find("Armature").GetComponent<PlayerAttack>();
+        _attackScript = GameObject.Find("CharacterTest").GetComponent<PlayerAttack>();
         
 
     }

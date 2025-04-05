@@ -7,6 +7,8 @@ using UnityEditorInternal;
 public class PlayerAttack : MonoBehaviour
 {
     public Transform PlayerPos;
+    private float _timeBtwAttack=0;
+
     private bool _weaponEquiped = false;
     public Vector3 boxsize;
     public LayerMask CustomLayerMask;
@@ -15,9 +17,14 @@ public class PlayerAttack : MonoBehaviour
     private Attack _currentAttack;
     private int _attackIndex=1;
     private PlayerMovement _playerMovement;
+    private Rigidbody _rb;
+    private Transform _transform;
     bool _isAttacking = false;
     private Animator _animator;
     public RuntimeAnimatorController[] runtimeAnimatorControllers;
+    public delegate void AttackEvent();
+    public AttackEvent IsAttacking;
+    public AttackEvent IsNotAttacking;
 
     public int AttackIndex
     {
@@ -51,26 +58,39 @@ public class PlayerAttack : MonoBehaviour
     {
         
         _animator = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody>();
+        _transform = GetComponent<Transform>();
         _isStarted = true;
-        _playerMovement = GetComponent<PlayerMovement>();
-        _playerMovement.IsMoving += StopAttack;
+       
+       
         
         
         
     }
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            _weapon.Attacks.Enqueue(new Attack(AttackIndex/5 , AttackIndex/10));
-           
-            if (!_isAttacking)
+
+        //if (_timeBtwAttack <= 0 & _weapon!=null)
+        //{
+            
+        //    _timeBtwAttack = _weapon.timeBtwAttack;
+        //    Debug.Log("prep");
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                StartCoroutine(Attack(_weapon));
+                _weapon.Attacks.Enqueue(new Attack(AttackIndex / 5, AttackIndex / 10));
+
+                if (!_isAttacking)
+                {
+                    IsAttacking?.Invoke();
+                    StartCoroutine(Attack(_weapon));
+                }
             }
-           
-           
-        }
+        //}
+        //else
+        //{
+        //    _timebtwattack-=time.deltatime;
+        //}
+        
 
         
     }
@@ -110,7 +130,6 @@ public class PlayerAttack : MonoBehaviour
 
     private void StopAttack()
     {
-        Attack first_attack;
         if(_weapon != null) 
         { 
             
@@ -141,7 +160,7 @@ public class PlayerAttack : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
             Collider[] hitColliders = new Collider[10];
-
+            
             int collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward, boxsize, hitColliders, PlayerPos.rotation, CustomLayerMask);
             int i = 0;
             while (i < collides)
@@ -156,46 +175,47 @@ public class PlayerAttack : MonoBehaviour
 
         else
         {
-                    int thisAtindex=AttackIndex;
-            if (thisAtindex == 1) {
-                _animator.SetBool("PunchPrep", true);
-                Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length.ToString());
-                yield return new WaitForSeconds(1f);
-                _animator.SetBool("PunchPrep", false);
+            int thisAtindex = AttackIndex;
+            if (thisAtindex == 1)
+            {
                 _animator.SetBool("IsAttacking", true);
             }
-                    Collider[] hitColliders = new Collider[10];
-                    _animator.SetBool("Punch" + (thisAtindex).ToString(), true);
-            _animator.speed = 2f;
-                    yield return new WaitForSeconds(0.5f);
-                    int collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward * _currentAttack.HitBoxRange, _currentAttack.HitBoxSize, hitColliders, PlayerPos.rotation, CustomLayerMask);
-                    Debug.Log("Punch" + (thisAtindex).ToString());
-                    _animator.SetBool("Punch" + (thisAtindex).ToString(), false);
-            _animator.speed = 1;
+            Collider[] hitColliders = new Collider[10];
+            yield return new WaitForEndOfFrame();
+            _animator.SetBool("Punch" + (thisAtindex).ToString(), true);
+            _animator.SetFloat("AttackSpeed",weapon.AttackSpeed);
+            int collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward * _currentAttack.HitBoxRange, _currentAttack.HitBoxSize, hitColliders, PlayerPos.rotation, CustomLayerMask);
+            _rb.velocity =_transform.forward*5f;
+            Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length);
+            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
+            //Debug.Log("Punch" + (thisAtindex).ToString());
+            _animator.SetBool("Punch" + (thisAtindex).ToString(), false);
+            _animator.speed = 1f;
             int i = 0;
-                    while (i < collides)
-                    {
-                        var CollidedObj = hitColliders[i];
-                        Entity en = CollidedObj.gameObject.GetComponent<Entity>();
-                        en.TakeDamage(_weapon.Damage);
-                        i++;
-                    }
+            while (i < collides)
+            {
+                var CollidedObj = hitColliders[i];
+                Entity en = CollidedObj.gameObject.GetComponent<Entity>();
+                en.TakeDamage(_weapon.Damage);
+                i++;
+            }
 
-                    yield return new WaitForSeconds(_currentAttack.DelayAfterAttack);
-                    Attack first_attack;
-                    AttackIndex++;
-                    if ((_weapon.Attacks.TryPeek(out first_attack)))
-                    {
-                        StartCoroutine(Attack(_weapon));
-                    }
-                    else
-                    {
-                        AttackIndex = 1;
+             yield return new WaitForSeconds(_currentAttack.DelayAfterAttack);
+            Attack first_attack;
+            AttackIndex++;
+            if ((_weapon.Attacks.TryPeek(out first_attack)))
+            {
+                StartCoroutine(Attack(_weapon));
+            }
+            else
+            {
+                IsNotAttacking?.Invoke();
+                AttackIndex = 1;
                 _animator.SetBool("IsAttacking", false);
                 _isAttacking = false;
-                    }
+            }
         }
     }
-
    
+
 }
