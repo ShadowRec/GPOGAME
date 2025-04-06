@@ -5,14 +5,18 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField]
-    private WeaponData _weapondata = new WeaponData();
+    private WeaponData _weapondata;
 
     private int _id;
     private BoxCollider _collider;
     private Rigidbody _rb;
     private PlayerAttack _attackScript;
     private bool _isAvaiable;
-  
+
+    public void SetWeapon(WeaponData weaponData)
+    {
+        _weapondata = weaponData;
+    }
 
     public Queue<Attack> Attacks
     {
