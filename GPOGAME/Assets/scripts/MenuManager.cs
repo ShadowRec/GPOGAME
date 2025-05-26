@@ -3,29 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class MenuManager : MonoBehaviour
 {
     public RectTransform mainMenuPanel;
     public RectTransform runSetupPanel;
-    public float transitionDuration = 0.5f;
+    public RectTransform progressPanel;
+    public RectTransform settingsPanel;
 
-    private bool isTransitioning = false;
+    public float slideDuration = 0.3f;
+    public Vector2 slideOffset = new Vector2(1920, 0); // смещение по оси X (для FullHD экрана)
 
-    public void OnNewRunClicked()
+
+    public void OnNewRun()
     {
-        if (!isTransitioning)
-        {
-            StartCoroutine(TransitionTo(runSetupPanel));
-        }
+        ShowPanel(mainMenuPanel, runSetupPanel);
     }
 
-    public void OnBackClicked()
+    public void OnNewRunBack()
     {
-        if (!isTransitioning)
-        {
-            StartCoroutine(TransitionTo(mainMenuPanel));
-        }
+        ShowPanel(runSetupPanel, mainMenuPanel);
     }
+
+    public void OpenProgress()
+    {
+        ShowPanel(mainMenuPanel, progressPanel);
+    }
+
+    public void OpenProgressBack()
+    {
+        ShowPanel(progressPanel, mainMenuPanel);
+    }
+
+    public void OpenSettings()
+    {
+        ShowPanel(mainMenuPanel, settingsPanel);
+    }
+
+    public void OpenSettingsBack()
+    {
+        ShowPanel(settingsPanel, mainMenuPanel);
+    }
+
+
 
     public void OnExitClicked()
     {
@@ -44,42 +64,40 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("GameScene"); // заменить на имя сцены уровня
     }
 
-
-
-    private IEnumerator TransitionTo(RectTransform target)
+    private void ShowPanel(RectTransform from, RectTransform to)
     {
-        isTransitioning = true;
+        StartCoroutine(SlidePanels(from, to));
+    }
 
-        Vector2 start = mainMenuPanel.anchoredPosition;
-        Vector2 end = target.anchoredPosition;
+    private IEnumerator SlidePanels(RectTransform from, RectTransform to)
+    {
+        Vector2 offScreenPos = slideOffset;
 
-        float elapsed = 0f;
-        while (elapsed < transitionDuration)
+        // Вычислить смещение "относительно from"
+        to.gameObject.SetActive(true);
+        to.anchoredPosition = -offScreenPos;
+
+        Vector2 fromStart = from.anchoredPosition;
+        Vector2 fromEnd = fromStart + offScreenPos;
+        Vector2 toStart = to.anchoredPosition;
+        Vector2 toEnd = Vector2.zero;
+
+        float elapsed = 0;
+
+        while (elapsed < slideDuration)
         {
             elapsed += Time.deltaTime;
-            float t = Mathf.Clamp01(elapsed / transitionDuration);
+            float t = Mathf.Clamp01(elapsed / slideDuration);
 
-            // Сдвигаем обе панели одновременно для эффекта "сдвига"
-            mainMenuPanel.anchoredPosition = Vector2.Lerp(start, new Vector2(-1920, 0), t);
-            runSetupPanel.anchoredPosition = Vector2.Lerp(new Vector2(1920, 0), Vector2.zero, t);
+            from.anchoredPosition = Vector2.Lerp(fromStart, fromEnd, t);
+            to.anchoredPosition = Vector2.Lerp(toStart, toEnd, t);
 
             yield return null;
         }
 
-        // Гарантируем финальное положение
-        if (target == runSetupPanel)
-        {
-            mainMenuPanel.anchoredPosition = new Vector2(-1920, 0);
-            runSetupPanel.anchoredPosition = Vector2.zero;
-        }
-        else
-        {
-            mainMenuPanel.anchoredPosition = Vector2.zero;
-            runSetupPanel.anchoredPosition = new Vector2(1920, 0);
-        }
-
-        isTransitioning = false;
+        from.gameObject.SetActive(false);
     }
-
-
 }
+
+
+
