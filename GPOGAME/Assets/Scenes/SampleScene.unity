@@ -248,12 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3a8a856c1448743932bda8a749c12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Stick
-  Damage: 20
-  AttackNumber: 0
-  WeaponType: 0
-  timeBtwAttack: 0.5
-  AttackSpeed: 2
+  _weapondata: {fileID: 11400000, guid: b20bf9cf5c1a28b4e91396f27c173c13, type: 2}
 --- !u!54 &331801715
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -576,6 +571,7 @@ MonoBehaviour:
   runtimeAnimatorControllers:
   - {fileID: 9100000, guid: 02aebdbe7af085544bdc4c6374d400c7, type: 2}
   - {fileID: 9100000, guid: 02aebdbe7af085544bdc4c6374d400c7, type: 2}
+  PunchOver: 0
   hand: {fileID: 312308083}
 --- !u!114 &703067218
 MonoBehaviour:
@@ -632,6 +628,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 100
   <Name>k__BackingField: hero
+  KnockBackForce: 0
+  IsEnemy: 0
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,12 +1506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b3a8a856c1448743932bda8a749c12d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Name: Stick
-  Damage: 20
-  AttackNumber: 0
-  WeaponType: 1
-  timeBtwAttack: 3
-  AttackSpeed: 0.5
+  _weapondata: {fileID: 11400000, guid: 8a465f4602a749d49988f8eee60627fa, type: 2}
 --- !u!54 &1873181662
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1751,6 +1744,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Health>k__BackingField: 100
   <Name>k__BackingField: Df
+  KnockBackForce: 0
+  IsEnemy: 0
 --- !u!114 &1999074510
 MonoBehaviour:
   m_ObjectHideFlags: 0

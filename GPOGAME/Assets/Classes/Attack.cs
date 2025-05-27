@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Attack 
 {
-    public float HitBoxRange = 1;
-    public Vector3 HitBoxSize = new Vector3((float)1.5, (float)1.5, (float)1.5);
+    public float HitBoxRange = (float)1.5;
+    public Vector3 HitBoxSize = new Vector3((float)2, (float)2.5, (float)3);
     public float DelayBeforeAttack = 1;
     public float DelayAfterAttack = 1;
 

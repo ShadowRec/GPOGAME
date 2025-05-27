@@ -18,6 +18,11 @@ public class Weapon : MonoBehaviour
         _weapondata = weaponData;
     }
 
+    public WeaponData WeaponData
+    {
+        get { return _weapondata; }
+    }
+
     public Queue<Attack> Attacks
     {
         get

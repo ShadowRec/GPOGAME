@@ -8,7 +8,7 @@ public class PlayerAttack : MonoBehaviour
 {
     public Transform PlayerPos;
     private float _timeBtwAttack=0;
-
+    public Color Gizmo_color;
     private bool _weaponEquiped = false;
     public Vector3 boxsize;
     public LayerMask CustomLayerMask;
@@ -25,7 +25,46 @@ public class PlayerAttack : MonoBehaviour
     public delegate void AttackEvent();
     public AttackEvent IsAttacking;
     public AttackEvent IsNotAttacking;
+    public bool PunchOver;
+    private string _state;
+    private Collider[] _hit_collides;
+    public string State
+    {
+        get
+        {
+            return _state;
+        }
+        set { }
+    }
 
+    public Collider[] Hit_collides
+    {
+        get
+        {
+            return _hit_collides;
+        }
+        set { }
+    }
+
+    public int Collides
+    {
+        get
+        {
+            int collides;
+            return collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward * _currentAttack.HitBoxRange, _currentAttack.HitBoxSize, _hit_collides, PlayerPos.rotation, CustomLayerMask) ;
+        }
+        set { }
+    }
+
+    public Weapon Weapon
+    {
+        get
+        {
+
+            return _weapon;
+        }
+        set { }
+    }
     public int AttackIndex
     {
         set
@@ -45,7 +84,7 @@ public class PlayerAttack : MonoBehaviour
 
         }
     }
-    private bool _state;
+    //private bool _state;
 
     public Transform hand;
     private enum _colliderState
@@ -70,10 +109,10 @@ public class PlayerAttack : MonoBehaviour
     void Update()
     {
 
-        //if (_timeBtwAttack <= 0 & _weapon!=null)
+        //if (_timeBtwAttack <= 0 & _weapon != null)
         //{
-            
-        //    _timeBtwAttack = _weapon.timeBtwAttack;
+
+        //    _timeBtwAttack = _weapon.WeaponData.timeBtwAttack;
         //    Debug.Log("prep");
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
@@ -88,35 +127,35 @@ public class PlayerAttack : MonoBehaviour
         //}
         //else
         //{
-        //    _timebtwattack-=time.deltatime;
+        //    _timeBtwAttack -= Time.deltaTime;
         //}
-        
 
-        
+
+
     }
 
-    //void OnDrawGizmos()
-    //{
-    //    if (_isStarted)
-    //    {
-    //        Gizmos.color = Color.red;
+    void OnDrawGizmos()
+    {
+        if (_isStarted)
+        {
+            Gizmos.color = Gizmo_color;
 
-    //        if (_weapon == null)
-    //        {
-    //            Gizmos.matrix = Matrix4x4.TRS(transform.position + transform.forward, transform.rotation, transform.localScale);
-    //            Gizmos.DrawCube(Vector3.zero, new Vector3(boxsize.x, boxsize.y, boxsize.z));
-    //        }
-    //        else
-    //        {
-    //            if (_currentAttack != null)
-    //            {
-    //                Gizmos.matrix = Matrix4x4.TRS(transform.position + transform.forward, transform.rotation, transform.localScale);
-    //                Gizmos.DrawCube(Vector3.zero, new Vector3(_currentAttack.HitBoxSize.x, _currentAttack.HitBoxSize.y, _currentAttack.HitBoxSize.z));
-    //            }
-    //        }
+            if (_weapon == null)
+            {
+                Gizmos.matrix = Matrix4x4.TRS(transform.position + transform.forward, transform.rotation, transform.localScale);
+                Gizmos.DrawCube(Vector3.zero, new Vector3(boxsize.x, boxsize.y, boxsize.z));
+            }
+            else
+            {
+                if (_currentAttack != null)
+                {
+                    Gizmos.matrix = Matrix4x4.TRS(gameObject.transform.position + transform.forward * _currentAttack.HitBoxRange + transform.up * (float)1.5, transform.rotation, transform.localScale);
+                    Gizmos.DrawCube(Vector3.zero, new Vector3(_currentAttack.HitBoxSize.x*2, _currentAttack.HitBoxSize.y*2, _currentAttack.HitBoxSize.z*2));
+                }
+            }
             
-    //    }
-    //}
+        }
+    }
     public void TakeWeapon(Transform weapon)
     {
         _weaponEquiped = true;
@@ -150,6 +189,12 @@ public class PlayerAttack : MonoBehaviour
         }
 
     }
+
+    private IEnumerator WaitForAttack()
+    {
+        yield return new WaitForSeconds(4f);
+        AttackIndex = 1;
+    }
     private IEnumerator Attack(Weapon weapon)
     {
         _isAttacking = true;
@@ -161,59 +206,40 @@ public class PlayerAttack : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
             Collider[] hitColliders = new Collider[10];
             
-            int collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward, boxsize, hitColliders, PlayerPos.rotation, CustomLayerMask);
-            int i = 0;
-            while (i < collides)
-            {
-                var CollidedObj = hitColliders[i];
-                Entity en = CollidedObj.gameObject.GetComponent<Entity>();
-                en.TakeDamage(5);
-                i++;
-            }
+           
             yield return new WaitForSeconds(0.1f);
         }
 
         else
         {
+            
+            _animator.SetBool("IsAttacking", true);
             int thisAtindex = AttackIndex;
-            if (thisAtindex == 1)
-            {
-                _animator.SetBool("IsAttacking", true);
-            }
-            Collider[] hitColliders = new Collider[10];
-            yield return new WaitForEndOfFrame();
-            _animator.SetBool("Punch" + (thisAtindex).ToString(), true);
+            _hit_collides = new Collider[10];
             _animator.SetFloat("AttackSpeed",weapon.AttackSpeed);
-            int collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward * _currentAttack.HitBoxRange, _currentAttack.HitBoxSize, hitColliders, PlayerPos.rotation, CustomLayerMask);
-            _rb.velocity =_transform.forward*5f;
-            Debug.Log(_animator.GetCurrentAnimatorStateInfo(0).length);
-            yield return new WaitForSeconds(_animator.GetCurrentAnimatorStateInfo(0).length);
-            //Debug.Log("Punch" + (thisAtindex).ToString());
-            _animator.SetBool("Punch" + (thisAtindex).ToString(), false);
-            _animator.speed = 1f;
-            int i = 0;
-            while (i < collides)
-            {
-                var CollidedObj = hitColliders[i];
-                Entity en = CollidedObj.gameObject.GetComponent<Entity>();
-                en.TakeDamage(_weapon.Damage);
-                i++;
-            }
-
-             yield return new WaitForSeconds(_currentAttack.DelayAfterAttack);
-            Attack first_attack;
+            // _animator.SetBool("Punch" + (thisAtindex).ToString(), true);
+            PunchOver = false;
+            this._state = "Punch" + (thisAtindex).ToString();
+            _rb.velocity = _transform.forward * 5f;
+           // int collides = Physics.OverlapBoxNonAlloc(gameObject.transform.position + transform.forward * _currentAttack.HitBoxRange, _currentAttack.HitBoxSize, _hit_collides, PlayerPos.rotation, CustomLayerMask);
+            // Debug.Log("Punch" + (thisAtindex).ToString());
+            _animator.Play("PUNCH" + (thisAtindex).ToString());
+            //int i = 0;
+            //while (i < collides)
+            //{
+        
+            //        var CollidedObj = hitColliders[i];
+            //        Entity en = CollidedObj.gameObject.GetComponent<Entity>();
+            //        en.TakeDamage(_weapon.WeaponData.Damage,en.transform);
+            //        i++;
+            //}
+            //Debug.Log(_currentAttack.DelayAfterAttack.ToString());
+            yield return new WaitUntil(() => PunchOver);
+            //yield return new WaitForSeconds(_currentAttack.DelayAfterAttack);
             AttackIndex++;
-            if ((_weapon.Attacks.TryPeek(out first_attack)))
-            {
-                StartCoroutine(Attack(_weapon));
-            }
-            else
-            {
-                IsNotAttacking?.Invoke();
-                AttackIndex = 1;
-                _animator.SetBool("IsAttacking", false);
-                _isAttacking = false;
-            }
+            IsNotAttacking?.Invoke();
+            _animator.SetBool("IsAttacking", false);
+            _isAttacking = false;
         }
     }
    
